@@ -1,5 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:geolocator/geolocator.dart';
 
 class WeatherModel {
   static const String apiKey = 'YOUR_OPENWEATHERMAP_API_KEY';
@@ -13,14 +14,12 @@ class WeatherModel {
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
     } else {
-      print('Failed to load weather data: ${response.statusCode}');
-      return null;
+      throw Exception('Failed to load weather data: ${response.statusCode}');
     }
   }
 
   Future<dynamic> getLocationWeather([double? lat, double? lon]) async {
     if (lat == null || lon == null) {
-      // Get current position if not provided
       Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.low);
       lat = position.latitude;
@@ -34,8 +33,7 @@ class WeatherModel {
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
     } else {
-      print('Failed to load weather data: ${response.statusCode}');
-      return null;
+      throw Exception('Failed to load weather data: ${response.statusCode}');
     }
   }
 
