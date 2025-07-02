@@ -3,14 +3,15 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
 import 'package:weather_app/services/weather.dart';
 import 'package:weather_app/utilities/constants.dart';
+import 'city_screen.dart';
 
 class LocationScreen extends StatefulWidget {
   final dynamic locationWeather;
 
-  LocationScreen({this.locationWeather});
+  const LocationScreen({super.key, required this.locationWeather});
 
   @override
-  _LocationScreenState createState() => _LocationScreenState();
+  State<LocationScreen> createState() => _LocationScreenState();
 }
 
 class _LocationScreenState extends State<LocationScreen> {
@@ -50,7 +51,6 @@ class _LocationScreenState extends State<LocationScreen> {
       windSpeed = weatherData['wind']['speed'];
       humidity = weatherData['main']['humidity'];
       
-      // Format date
       var now = DateTime.now();
       date = DateFormat('EEEE, MMM d').format(now);
     });
@@ -62,13 +62,13 @@ class _LocationScreenState extends State<LocationScreen> {
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('images/location_background.jpg'),
+            image: const AssetImage('images/location_background.jpg'),
             fit: BoxFit.cover,
             colorFilter: ColorFilter.mode(
                 Colors.white.withOpacity(0.8), BlendMode.dstATop),
           ),
         ),
-        constraints: BoxConstraints.expand(),
+        constraints: const BoxConstraints.expand(),
         child: SafeArea(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -82,7 +82,7 @@ class _LocationScreenState extends State<LocationScreen> {
                       var weatherData = await weather.getLocationWeather();
                       updateUI(weatherData);
                     },
-                    child: Icon(
+                    child: const Icon(
                       Icons.near_me,
                       size: 50.0,
                       color: Colors.white,
@@ -93,7 +93,7 @@ class _LocationScreenState extends State<LocationScreen> {
                       var typedName = await Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => CityScreen(),
+                          builder: (context) => const CityScreen(),
                         ),
                       );
                       if (typedName != null) {
@@ -102,7 +102,7 @@ class _LocationScreenState extends State<LocationScreen> {
                         updateUI(weatherData);
                       }
                     },
-                    child: Icon(
+                    child: const Icon(
                       Icons.location_city,
                       size: 50.0,
                       color: Colors.white,
@@ -111,7 +111,7 @@ class _LocationScreenState extends State<LocationScreen> {
                 ],
               ),
               Padding(
-                padding: EdgeInsets.only(left: 15.0),
+                padding: const EdgeInsets.only(left: 15.0),
                 child: Row(
                   children: <Widget>[
                     Text(
@@ -126,7 +126,7 @@ class _LocationScreenState extends State<LocationScreen> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(right: 15.0),
+                padding: const EdgeInsets.only(right: 15.0),
                 child: Text(
                   "$weatherMessage in $cityName!",
                   textAlign: TextAlign.right,
@@ -134,17 +134,17 @@ class _LocationScreenState extends State<LocationScreen> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.all(15.0),
+                padding: const EdgeInsets.all(15.0),
                 child: Column(
                   children: [
                     Text(
                       date ?? '',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 20,
                         color: Colors.white,
                       ),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -176,7 +176,8 @@ class WeatherDetail extends StatelessWidget {
   final String value;
   final String label;
 
-  WeatherDetail({
+  const WeatherDetail({
+    super.key,
     required this.icon,
     required this.value,
     required this.label,
@@ -187,9 +188,9 @@ class WeatherDetail extends StatelessWidget {
     return Column(
       children: [
         Icon(icon, color: Colors.white, size: 30),
-        SizedBox(height: 5),
-        Text(value, style: TextStyle(color: Colors.white, fontSize: 16)),
-        Text(label, style: TextStyle(color: Colors.white70, fontSize: 14)),
+        const SizedBox(height: 5),
+        Text(value, style: const TextStyle(color: Colors.white, fontSize: 16)),
+        Text(label, style: const TextStyle(color: Colors.white70, fontSize: 14)),
       ],
     );
   }
