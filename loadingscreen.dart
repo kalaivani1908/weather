@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:weather_app/services/weather.dart';
-import 'location_screen.dart';
+import 'package:weather_app/screens/location_screen.dart';
 
 class LoadingScreen extends StatefulWidget {
+  const LoadingScreen({super.key});
+
   @override
-  _LoadingScreenState createState() => _LoadingScreenState();
+  State<LoadingScreen> createState() => _LoadingScreenState();
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
@@ -17,7 +20,6 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
   void getLocationData() async {
     try {
-      // Check location permission
       bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled) {
         throw Exception('Location services are disabled.');
@@ -35,15 +37,14 @@ class _LoadingScreenState extends State<LoadingScreen> {
         throw Exception('Location permissions are permanently denied.');
       }
 
-      // Get position
       Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.low);
       
-      // Get weather data
       WeatherModel weatherModel = WeatherModel();
       var weatherData = await weatherModel.getLocationWeather(
           position.latitude, position.longitude);
 
+      if (!mounted) return;
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -53,7 +54,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
         ),
       );
     } catch (e) {
-      print('Error: $e');
+      debugPrint('Error: $e');
       // Handle error appropriately
     }
   }
